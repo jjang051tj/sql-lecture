@@ -55,6 +55,49 @@ SELECT * FROM emp WHERE EMPNO = 7499 AND DEPTNO = 30;
 SELECT * FROM emp where deptno = 30 OR job = 'clerk';
 
 
+-- 연산자  + , - , * , /
+SELECT * FROM emp;
+SELECT * FROM emp WHERE sal*12 > 20000;
+SELECT * FROM emp WHERE sal*12 < 20000;
+SELECT * FROM emp WHERE sal*12 >= 20000;
+SELECT * FROM emp WHERE sal*12 <= 20000;
+SELECT * FROM emp WHERE sal*12 = 20000;
+SELECT * FROM emp WHERE sal*12 != 20000;
+
+-- 문자도 크기 비교 가능 알파벳 순서로 비교
+SELECT * FROM emp WHERE ename >= 'FORD';  
+
+--job이 MANAGER 또는 SALESMAN 또는 CLERK
+SELECT ename,job FROM emp WHERE JOB = 'MANAGER' OR JOB = 'SALESMAN' OR JOB = 'CLERK';
+
+-- in (값 여러개 있을 수 있음) in구문안에 하나라도 걸리면 true,false
+SELECT ename,job FROM emp WHERE JOB IN ('MANAGER','SALESMAN','CLERK');
+
+--job이 MANAGER 또는 SALESMAN 또는 CLERK이 아닌 사람
+SELECT ename,job FROM emp WHERE JOB != 'MANAGER' AND JOB <> 'SALESMAN' AND JOB ^= 'CLERK';
+SELECT ename,job FROM emp WHERE JOB NOT IN ('MANAGER','SALESMAN','CLERK');
+
+--월급이 2000보다 크거나 같고 3000보다 작거난 같은 사람  
+SELECT ename,sal FROM emp WHERE sal>=2000 AND sal<=3000;
+SELECT ename,sal FROM emp WHERE sal BETWEEN 2000 AND 3000;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
