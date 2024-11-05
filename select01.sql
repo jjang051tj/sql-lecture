@@ -81,6 +81,103 @@ SELECT ename,job FROM emp WHERE JOB NOT IN ('MANAGER','SALESMAN','CLERK');
 SELECT ename,sal FROM emp WHERE sal>=2000 AND sal<=3000;
 SELECT ename,sal FROM emp WHERE sal BETWEEN 2000 AND 3000;
 
+--like 연산자  검색
+SELECT * FROM emp;  
+SELECT * FROM emp WHERE ename LIKE 'J%';
+
+--앞에 이름이 뭐여도 상관없는데 끝이 ER로 끝나는 사람 찾기....
+SELECT * FROM emp WHERE ename LIKE '%ER';
+
+--이름중에  AM을 포함하고 있는 사람 찾아보기...
+SELECT * FROM emp WHERE ename LIKE '%AM%';
+
+--이름중에  M을 포함하고 있는 사람 찾아보기...
+SELECT * FROM emp WHERE ename LIKE '%M%';
+
+--이름중에  M 또는 I을 포함하고 있는 사람 찾아보기...M으로 시작하고 i가 나오는 경우
+SELECT * FROM emp WHERE ename LIKE '%M%I%';
+--이름이 다섯글자인 사람
+SELECT * FROM emp WHERE ename LIKE '_____';
+
+--이름이 다섯글자인 사람중에 마지막 글자가 s인 사람
+SELECT * FROM emp WHERE ename LIKE '____S';
+
+--이름의 세번째글자가 A인 사람 찾기
+SELECT * FROM emp WHERE ename LIKE '__A%';
+
+
+SELECT 'steven_king' AS ename FROM dual;
+
+WITH temp AS (
+	SELECT 'STEVEN_KING' AS ename FROM dual UNION ALL
+	SELECT 'ALBERT_KING' AS ename FROM dual UNION ALL
+	SELECT 'SCOTT' AS ename FROM dual 
+)
+SELECT * FROM temp WHERE ename LIKE '%$_%' ESCAPE '$';
+
+--null 검색 null은 = 못씀 is
+SELECT * FROM emp;
+SELECT * FROM emp WHERE COMM IS NOT NULL;
+
+SELECT * FROM emp WHERE MGR IS NOT NULL;
+
+SELECT ENAME, nvl(comm,0)+100 AS comm100 FROM emp;
+
+
+--practice01
+SELECT * FROM emp WHERE ename LIKE '%S';
+
+--practice02
+SELECT * FROM emp 
+WHERE DEPTNO = 30 AND JOB = 'SALESMAN';
+
+--practice0301
+SELECT * FROM emp 
+WHERE (DEPTNO = 20 OR DEPTNO = 30) AND SAL > 2000;
+
+--practice0302
+SELECT * FROM emp 
+WHERE DEPTNO IN (20,30) 
+AND SAL > 2000;
+
+--practice04
+SELECT * FROM emp
+WHERE sal > 2000 AND sal < 3000;
+
+--practice0402 between은 equal 포함 >=  <=
+SELECT * FROM emp
+WHERE sal BETWEEN 2000 AND 3000;
+
+--practice05
+SELECT ename,empno,sal, deptno FROM emp 
+WHERE 
+DEPTNO = 30 AND 
+sal NOT BETWEEN 1000 AND 2000 AND 
+ename LIKE '%E%';
+
+
+--practice05
+SELECT * FROM emp
+WHERE comm IS NULL 
+	AND mgr IS NOT NULL
+	AND JOB IN ('MANAGER','CLERK') 
+	AND ENAME NOT LIKE '_L%'; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
