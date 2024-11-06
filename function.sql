@@ -227,7 +227,7 @@ FROM dual;
 --형변환  type casting  자기가 봐서 대강 바꿀만 하다 싶으면 바꿔줌..  명시적
 SELECT empno,ename,empno+'1000' FROM emp;
 
-ALTER SESSION SET NLS_LANGUAGE= 'AMERICAN';
+ALTER SESSION SET NLS_LANGUAGE= 'TRADITIONAL CHINESE';
 
 -- TO_CHAR
 SELECT sysdate,
@@ -238,8 +238,13 @@ FROM dual;
 
 
 
+SELECT TO_NUMBER('1234', '999,999')
+  FROM DUAL;
 
+SELECT TO_NUMBER('1,300','999,999') - TO_NUMBER('1,200','999,999') 
+AS num FROM dual;
 
+SELECT TO_NUMBER('123.456','999.999') AS num FROM dual;
 
 
 
