@@ -279,7 +279,9 @@ SELECT empno,ename,hiredate,
 	   NVL(TO_CHAR(comm),'N/A') AS comm
 FROM emp;
 
+SELECT * FROM emp;
 
+-- group 함수 / 다중행 함수
 
 
 
