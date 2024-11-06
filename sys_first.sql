@@ -21,7 +21,7 @@ GRANT CONNECT,RESOURCE,UNLIMITED TABLESPACE TO SCOTT;
 GRANT CREATE TABLE TO scott;
 
 -- sys에서 scott 생성됐는지 table확인
-SELECT * FROM dba_users;
+SELECT * FROM dba_users WHERE USERNAME = 'SCOTT';
 
 
 

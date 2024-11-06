@@ -173,12 +173,8 @@ WHERE comm IS NULL
 
 
 
-
-
-
-
-
-
+SELECT * FROM emp;
+SELECT * FROM DEPT;
 
 
 
