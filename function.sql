@@ -246,6 +246,41 @@ AS num FROM dual;
 
 SELECT TO_NUMBER('123.456','999.999') AS num FROM dual;
 
+SELECT TO_DATE('2024-11-06','YYYY-MM-DD') AS now01
+FROM dual;
+
+--1982-06-01 이후 입사자들만 출력
+SELECT ename,hiredate FROM emp WHERE HIREDATE > TO_DATE('1981/06/01','YYYY/MM/DD');
+
+-- null 처리 함수
+SELECT empno,ename,sal,comm,sal+nvl(comm,0) FROM emp;
+
+-- comm이 있는지 없는지  o,x
+SELECT empno,ename,sal,comm,nvl2(comm,'o','x') FROM emp;
+
+
+
+-----practice01
+SELECT empno, 
+	   RPAD(SUBSTR(empno,1,2),4,'*') AS masking_empno,
+	   ename,
+	   RPAD(SUBSTR(ename,1,1),LENGTH(ENAME),'*') AS masking_ename 
+FROM emp;
+
+-----practice02
+SELECT empno,ename,sal,
+	   TRUNC(sal/21.5,2) AS day_pay	,
+	   ROUND(sal/21.5/8,1) AS time_pay
+FROM emp;
+
+-----practice03
+SELECT empno,ename,hiredate,
+	   TO_CHAR(NEXT_DAY(ADD_MONTHS(HIREDATE,3),'월요일'),'YYYY-MM-DD') AS r_day,
+	   NVL(TO_CHAR(comm),'N/A') AS comm
+FROM emp;
+
+
+
 
 
 
