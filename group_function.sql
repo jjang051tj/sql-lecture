@@ -122,6 +122,84 @@ FROM emp;
 
 
 
+--rollup 함수 출력용 함수
+SELECT deptno, job, count(*), max(sal),sum(sal),avg(sal)
+FROM emp
+GROUP BY ROLLUP (DEPTNO , JOB) 
+ORDER BY DEPTNO , JOB;
+
+
+--cube 함수 출력용 함수
+SELECT deptno, job, count(*), max(sal),sum(sal),avg(sal)
+FROM emp
+GROUP BY CUBE (DEPTNO , JOB) 
+ORDER BY DEPTNO , JOB;
+
+
+
+SELECT 
+    deptno,
+    job,
+    SUM(sal) AS total_salary,
+    GROUPING(deptno) AS dept_grouping,
+    GROUPING(job) AS job_grouping
+FROM emp
+GROUP BY ROLLUP(deptno, job)
+ORDER  by DEPTNO; 
+
+
+
+---practice01
+--부서 번호, 평균급여,최대 급여,최소 급여, 몇명
+SELECT 
+	DEPTNO ,
+	TRUNC(AVG(sal)) AS avg_sal,
+	MAX(sal)  AS max_sal,
+	MIN(sal)  AS min_sal,
+	COUNT(*)  AS count
+FROM emp
+ORDER BY DEPTNO ;
+
+--practice02
+-- 부서별 인원인 3명 이상인 부서를 출력하시오.
+SELECT 
+	job,
+	COUNT(*) AS count
+FROM emp
+GROUP BY job
+HAVING COUNT(*) >= 3;
+
+--practice03
+-- 사원들의 입사연도를 기준으로 부서별 몇명씩 있는지  출력하시오.
+SELECT 
+	TO_CHAR(HIREDATE,'YYYY') AS entrance_year,
+	DEPTNO,
+	COUNT(*)  AS count
+FROM emp
+GROUP BY TO_CHAR(HIREDATE,'YYYY'), DEPTNO
+ORDER BY entrance_year DESC, count ASC;
+
+-- where / group by / having / order by
+
+--practice04
+-- 커미션 유무 갯수
+SELECT NVL2(COMM,'o','x') AS exist_comm,
+	   COUNT(*) 
+FROM emp
+GROUP BY NVL2(COMM,'o','x');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
