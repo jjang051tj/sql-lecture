@@ -260,6 +260,164 @@ SELECT empno,ename,sal,comm,nvl2(comm,'o','x') FROM emp;
 
 
 
+-- decode 오라클 전용함수 ansi 함수 (표준)   vs 오라클
+-- 조건 if else
+
+-- sal manager 10%인상,salesman 5%인상 analyst는 연봉동결 나머지는 3%인상
+SELECT empno,ename,job,sal, 
+	DECODE(JOB,
+		'MANAGER', SAL*1.1,
+		'SALESMAN', SAL*1.05,
+		'ANALYST', SAL ,
+		SAL * 1.03
+	) AS upsal
+FROM emp;
+
+WITH temp AS (
+	SELECT 'M' gender FROM dual UNION ALL
+	SELECT 'F' gender FROM dual UNION ALL
+	SELECT 'X' gender FROM dual
+)
+SELECT gender, 
+	DECODE(gender,
+		'M', '남자',
+		'F', '여자',
+		'기타'
+	)  AS gender_kor
+FROM temp; 
+
+SELECT job FROM emp;
+
+--gender_kor m 남자 f 여자 기타
+
+SELECT ename,job,
+	DECODE(job,
+		'CLERK','사원',
+		'SALESMAN','영업사원',
+		'MANAGER','관리자',
+		'PRESIDENT','회장',
+		'ANALYST','분석가',
+		'기타'		
+	) AS job_kor
+FROM emp;
+
+SELECT ename,job,
+	CASE job
+		WHEN 'MANAGER' THEN sal*1.1
+		WHEN 'SALESMAN' THEN sal*1.05
+		WHEN 'ANALYST' THEN sal
+		ELSE sal*1.03
+	END AS upsal
+FROM emp;
+
+
+SELECT ename,job,
+	DECODE(job,
+		'CLERK','사원',
+		'SALESMAN','영업사원',
+		'MANAGER','관리자',
+		'PRESIDENT','회장',
+		'ANALYST','분석가',
+		'기타'		
+	) AS job_kor
+FROM emp;
+
+--switch 방식
+SELECT ename, job,
+	CASE JOB 
+		WHEN 'CLERK' THEN '사원'
+		WHEN 'SALESMAN' THEN '영업사원'
+		WHEN 'MANAGER' THEN '관리자'
+		WHEN 'PRESIDENT' THEN '회장'
+		WHEN 'ANALYST' THEN '분석가'
+		ELSE '기타'
+	END AS job_kor
+FROM emp;
+
+--if else if else 방식
+SELECT ename, job,
+	CASE  
+		WHEN JOB = 'CLERK' THEN '사원'
+		WHEN JOB = 'SALESMAN' THEN '영업사원'
+		WHEN JOB = 'MANAGER' THEN '관리자'
+		WHEN JOB = 'PRESIDENT' THEN '회장'
+		WHEN JOB = 'ANALYST' THEN '분석가'
+		ELSE '기타'
+	END AS job_kor
+FROM emp;
+
+--sal을 가지고 2900 이상이면 1등급 2700이상이면 2등급 2000이상 이면 3등급 4등급
+
+SELECT ename, job, sal,
+   CASE 
+      WHEN sal >= 2900 THEN '1등급'
+      WHEN sal >= 2700 THEN '2등급'
+      WHEN sal >= 2000 THEN '3등급'
+      ELSE '4등급'
+   END AS grade
+FROM emp ORDER BY sal desc;
+
+SELECT ename, hiredate FROM emp;  -- 입사일이 1분기, 2분기,3분기, 4분기 인지 출력 		
+
+
+SELECT HIREDATE,
+	CASE 
+		WHEN TO_CHAR(hiredate,'q') = '1' THEN '1분기'
+		WHEN TO_CHAR(hiredate,'q') = '2' THEN '2분기'
+		WHEN TO_CHAR(hiredate,'q') = '3' THEN '3분기'
+		WHEN TO_CHAR(hiredate,'q') = '4' THEN '4분기'
+	END AS quarter
+ FROM emp;
+
+SELECT HIREDATE,
+	CASE TO_CHAR(hiredate,'q') 
+		WHEN '1' THEN '1분기'
+		WHEN '2' THEN '2분기'
+		WHEN '3' THEN '3분기'
+		WHEN '4' THEN '4분기'
+	END AS quarter
+ FROM emp;
+
+-- deptno = 10 부서일때 sal 2000 보다 크면 1등급 1500크면 2등급 1000보다 크면 3등급
+-- deptno = 20 부서일때 sal 3000 보다 크면 1등급 2500크면 2등급 2000보다 크면 3등급
+-- deptno = 30 부서일때 sal 2500 보다 크면 1등급 2000크면 2등급 1500보다 크면 3등급
+
+SELECT ename, sal, deptno FROM emp;
+--please give me a code
+
+SELECT ename,sal,deptno,
+   CASE 
+      WHEN deptno = 10 THEN 
+      	CASE
+      		WHEN sal >= 2000 THEN '1등급'
+      		WHEN sal >= 1500 THEN '2등급'
+      		WHEN sal >= 1000 THEN '3등급'
+      		ELSE '4등급'
+      	END
+      WHEN deptno = 20 THEN 
+      	CASE
+      		WHEN sal >= 3000 THEN '1등급'
+      		WHEN sal >= 2500 THEN '2등급'
+      		WHEN sal >= 2000 THEN '3등급'
+      		ELSE '4등급'
+      	END
+      WHEN deptno = 30 THEN
+      	CASE
+      		WHEN sal >= 2500 THEN '1등급'
+      		WHEN sal >= 2000 THEN '2등급'
+      		WHEN sal >= 1500 THEN '3등급'
+      		ELSE '4등급'
+      	END
+   END AS sal_grade
+FROM emp;
+
+SELECT * FROM emp;
+
+
+
+
+
+
 -----practice01
 SELECT empno, 
 	   RPAD(SUBSTR(empno,1,2),4,'*') AS masking_empno,
@@ -280,6 +438,19 @@ SELECT empno,ename,hiredate,
 FROM emp;
 
 SELECT * FROM emp;
+
+--practice04
+
+SELECT empno,ename,mgr,
+	CASE
+		WHEN MGR IS NULL THEN 0000
+		WHEN SUBSTR(MGR,1,2) = 75 THEN 5555
+		WHEN SUBSTR(MGR,1,2) = 76 THEN 6666
+		WHEN SUBSTR(MGR,1,2) = 77 THEN 7777
+		WHEN SUBSTR(MGR,1,2) = 78 THEN 8888
+		ELSE MGR 
+	END AS chg_mgr
+FROM emp;
 
 -- group 함수 / 다중행 함수
 
