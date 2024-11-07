@@ -188,10 +188,24 @@ SELECT NVL2(COMM,'o','x') AS exist_comm,
 FROM emp
 GROUP BY NVL2(COMM,'o','x');
 
+--practice05
+-- 다음과 같은 결과가 나오도록 SQL문을 작성해 보세요. 
+-- 각 부서의 입사 연도별 사원 수, 최고 급여, 급여 합, 평균 급여를 출력하고 
+-- 각 부서별 소계와 총계를 출력하세요.
+SELECT 
+	deptno,
+	TO_CHAR(HIREDATE ,'YYYY') AS HIREDATE ,
+	COUNT(*)  AS count,
+	MAX(sal) AS max_sal,
+	SUM(sal) AS sum_sal,
+	AVG(sal) AS avg_sal
+FROM emp
+GROUP BY ROLLUP (DEPTNO , TO_CHAR(HIREDATE ,'YYYY'))
+ORDER BY DEPTNO, HIREDATE;
 
 
 
-
+--join
 
 
 
