@@ -89,5 +89,5 @@ select e1.empno,e1.ename,e1.job,e1.mgr,e2.mgr AS mgr_empno,e2.ename AS mgr_name
 FROM emp e1 RIGHT OUTER JOIN emp e2 ON (e1.mgr = e2.empno);
 
 
- 
+
 
