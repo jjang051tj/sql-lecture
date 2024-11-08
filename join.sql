@@ -90,4 +90,100 @@ FROM emp e1 RIGHT OUTER JOIN emp e2 ON (e1.mgr = e2.empno);
 
 
 
+--practice01
+--급여가 2000 초과인 사원들의 부서저옵 사원 정보 출력
+
+--ansi natural join 같이 쓴 컬럼에는 소속을 붙이지 않는다.
+SELECT DEPTNO , d.DNAME,e.EMPNO,e.ENAME, e.SAL 
+FROM emp e NATURAL JOIN dept d
+WHERE e.SAL > 2000;
+
+SELECT d.DEPTNO, d.DNAME,e.EMPNO,e.ENAME, e.SAL 
+FROM emp e 
+JOIN DEPT d
+ON e.DEPTNO  = d.DEPTNO 
+WHERE e.SAL > 2000;
+
+--오라클 조인
+SELECT d.DEPTNO, d.DNAME,e.EMPNO,e.ENAME, e.SAL 
+FROM EMP e , DEPT d
+WHERE e.DEPTNO  = d.DEPTNO  
+AND e.SAL > 2000;
+
+
+--practice02
+-- ansi
+SELECT d.DEPTNO ,d.DNAME , 
+	   TRUNC(avg(sal)) AS avg_sal, 
+	   max(sal) AS max_sal,
+	   min(sal) AS min_sal,
+	   count(*) AS cnt
+FROM emp e
+INNER JOIN DEPT d 
+ON e.DEPTNO = d.DEPTNO
+GROUP BY d.DEPTNO , d.DNAME;
+
+--오라클
+SELECT d.DEPTNO ,d.DNAME , 
+	   TRUNC(avg(sal)) AS avg_sal, 
+	   max(sal) AS max_sal,
+	   min(sal) AS min_sal,
+	   count(*) AS cnt
+FROM emp e, DEPT d 
+WHERE e.DEPTNO = d.DEPTNO
+GROUP BY d.DEPTNO , d.DNAME;
+
+
+
+
+--practice03
+-- ansi
+SELECT d.DEPTNO ,d.DNAME ,e.ENAME ,e.EMPNO , e.SAL 
+FROM EMP e
+RIGHT OUTER JOIN DEPT d 
+ON e.DEPTNO = d.DEPTNO ;
+
+-- 오라클
+SELECT d.DEPTNO ,d.DNAME ,e.ENAME ,e.EMPNO , e.SAL 
+FROM EMP e, DEPT d 
+WHERE e.DEPTNO(+) = d.DEPTNO;
+
+
+-- practice04
+-- ansi
+SELECT d.DEPTNO,d.DNAME,
+       e1.EMPNO,e1.ENAME,e1.MGR,e1.SAL,e1.DEPTNO,
+       s.LOSAL , s.HISAL , s.GRADE , 
+       e2.EMPNO AS MGR_EMPNO, e2.ENAME  AS MGR_ENAME
+FROM EMP e1
+RIGHT OUTER JOIN DEPT d
+	ON e1.DEPTNO = d.DEPTNO 
+LEFT OUTER JOIN SALGRADE s 
+	ON e1.SAL BETWEEN s.LOSAL AND s.HISAL
+LEFT OUTER JOIN EMP e2
+	ON e1.mgr = e2.EMPNO
+ORDER BY d.DEPTNO;
+
+-- 오라클
+SELECT d.DEPTNO,d.DNAME,
+       e1.EMPNO,e1.ENAME,e1.MGR,e1.SAL,e1.DEPTNO,
+       s.LOSAL , s.HISAL , s.GRADE , 
+       e2.EMPNO AS MGR_EMPNO, e2.ENAME  AS MGR_ENAME
+FROM EMP e1, DEPT d,SALGRADE s, EMP e2
+WHERE e1.DEPTNO(+) = d.DEPTNO  
+AND e1.SAL BETWEEN s.LOSAL AND s.HISAL
+AND e1.mgr = e2.EMPNO(+)
+ORDER BY d.DEPTNO;
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -151,6 +151,70 @@ GROUP BY DEPTNO
 	HAVING avg(sal) >= 2000;
 
 
+--join 테이블을 여러개 붙여서 사용  
+SELECT * FROM EMP;
+SELECT * FROM dept;
+--데카르트의 곱
+
+--오라클 조인
+SELECT e.*, d.dname,d.loc 
+FROM emp e, dept d
+WHERE e.DEPTNO = d.DEPTNO;
+
+--ansi cross join
+SELECT e1.empno,e1.ename,e1.mgr, d.dname, d.loc
+FROM EMP e1
+CROSS JOIN dept d;
+
+
+
+--표준join ansi 조인
+SELECT e.*, d.dname,d.loc
+FROM EMP e
+INNER JOIN DEPT d ON e.DEPTNO = d.DEPTNO;  
+--inner는 생략 가능하다. 안쓰면 기본적으로 inner join으로 인식한다.  
+
+
+--오라클  left outer 조인
+SELECT e1.empno,e1.ename,e1.mgr,e2.empno,e2.ename
+FROM EMP e1, EMP e2
+WHERE e1.mgr = e2.EMPNO(+);
+
+--outer join
+SELECT e1.empno,e1.ename,e1.mgr,e2.empno,e2.ename
+FROM EMP e1
+LEFT OUTER JOIN emp e2
+ON e1.mgr =  e2.empno;
+
+
+--오라클 자체 조인
+SELECT e1.empno,e1.ename,e1.mgr,e2.empno,e2.ename
+FROM EMP e1, EMP e2
+WHERE e1.mgr = e2.EMPNO(+);
+
+--outer join
+SELECT e1.empno,e1.ename,e1.mgr,e2.empno,e2.ename
+FROM EMP e1
+RIGHT OUTER JOIN emp e2
+ON e1.mgr =  e2.empno;
+
+
+SELECT e1.empno,e1.ename,e1.mgr,d.dname, d.loc, d.DEPTNO 
+FROM EMP e1
+FULL OUTER JOIN dept d
+ON e1.DEPTNO = d.DEPTNO;
+
+--거의 대부분은 inner join 되도록이면 ansi join을 쓰도록 노력
+
+
+
+
+
+
+
+
+  --
+
 
 
 
