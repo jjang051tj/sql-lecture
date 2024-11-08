@@ -68,7 +68,73 @@ SELECT empno,ename,job, sal,
 ) AS salgrade
 FROM emp e;
 
+--262p 문제 풀어보기...
+--같이 풀어보아요...
+-- 1. 전체 사원 중 ALLEN과 같은 직책 (JOB) 인 사원들의 사원 정보, 
+-- 부서 정보를 다음과 같이 출력하 는 SQL문을 작성하세요.
 
+SELECT * FROM emp
+WHERE ename = 'ALLEN';
+
+
+--오라클 조인
+SELECT * FROM EMP e, DEPT d 
+WHERE e.DEPTNO = d.DEPTNO AND  
+job = (
+	SELECT JOB FROM emp
+	WHERE ename = 'ALLEN'
+);
+
+--안시 조인
+SELECT * FROM EMP e
+JOIN DEPT d 
+ON e.DEPTNO = d.DEPTNO 
+WHERE job = (
+	SELECT JOB FROM emp
+	WHERE ename = 'ALLEN'
+);
+
+--2번
+-- 전체 사원의 평균 급여 (SAL) 보다 높은 급여를 받는 사원들의 
+--사원 정보, 부서 정보, 급여 등급 정 보를 출력하는 SQL문을 작성하세요
+SELECT * FROM EMP e 
+WHERE sal > (SELECT avg(sal) AS avg_sal FROM emp);
+
+SELECT * FROM EMP e, DEPT d
+WHERE e.DEPTNO = d.DEPTNO AND 
+sal > (SELECT avg(sal) AS avg_sal FROM emp);
+
+SELECT e.*, d.dname,d.loc FROM EMP e
+JOIN DEPT d 
+ON e.DEPTNO = d.DEPTNO 
+WHERE e.DEPTNO = d.DEPTNO AND 
+sal > (SELECT avg(sal) AS avg_sal FROM emp);
+
+
+-- 3.
+-- 10번 부서에 근무하는 사원 중 30번 부서에는 존재하지 않는 직책을 가진 
+-- 사원들의 사원 정보, 부 서 정보를 다음과 같이 출력하는 SQL문을 작성하세요.
+
+SELECT e.*, d.dname,d.loc FROM EMP e
+JOIN DEPT d 
+ON e.DEPTNO = d.DEPTNO 
+WHERE e.DEPTNO = d.DEPTNO AND 
+e.DEPTNO = 10 AND 
+JOB NOT IN (SELECT DISTINCT JOB FROM emp
+WHERE DEPTNO = 30);
+
+-- 4.
+-- 직책이 SALESMAN인 사람들의 최고 급여보다 높은 급여를 받는 사원들의 
+-- 사원 정보, 급여 등급  정보를 다음과 같이 출력하는 SQL문을 작성하세요
+-- 4.1
+SELECT * FROM emp
+WHERE sal > (SELECT MAX(sal) AS max_sal FROM EMP e 
+WHERE JOB = 'SALESMAN');
+
+-- 4.2
+SELECT * FROM emp
+WHERE sal > ALL ( SELECT sal FROM EMP e 
+WHERE JOB = 'SALESMAN' );
 
 
 
