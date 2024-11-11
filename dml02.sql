@@ -158,6 +158,48 @@ DROP TABLE emp_rename;
 --만약 drop table로 삭제가 안될경우는 제약 사항이 걸려 있어서 그렇다.
 DROP TABLE emp_rename CASCADE CONSTRAINTS;
 
+-- practice
+CREATE TABLE emp_hw (
+	empno number(4),
+	ename varchar2(10),
+	job varchar2(9),
+	mgr number(4),
+	hiredate DATE,
+	--sal number(3,7), 앞에 숫자보다 뒤에 숫자가 더 크면 소수점 자리수 0.0000123
+	sal number(7,2),
+	comm number(7,2),
+	deptno number(2)
+);
+
+--practice02
+ALTER TABLE EMP_HW 
+ADD bigo varchar2(20);
+
+--practice03
+ALTER TABLE EMP_HW 
+modify bigo varchar2(30);
+
+--practice04
+ALTER TABLE EMP_HW 
+RENAME column bigo TO remark;
+
+
+--practice05
+INSERT INTO emp_hw 
+	(SELECT EMPNO,ename,job,
+			mgr,hiredate,sal,comm,DEPTNO, NULL FROM emp);
+
+SELECT * FROM emp_hw;
+
+DROP TABLE emp_hw;
+
+
+
+
+
+
+
+
 
 
 
