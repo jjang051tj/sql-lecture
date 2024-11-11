@@ -141,7 +141,23 @@ ALTER TABLE EMP_ALTER
 DROP COLUMN tel;
 
 
- 
+-- 테이블 이름 변경
+RENAME emp_alter TO emp_rename;
+SELECT * FROM emp_rename;
+
+
+-- table의 데이터 싹다 삭제...
+-- 조심해서 쓰자 commit / rollback이 없다.
+TRUNCATE TABLE emp_rename; 
+
+SELECT * FROM emp_rename;
+
+--테이블 삭제
+DROP TABLE emp_rename;
+
+--만약 drop table로 삭제가 안될경우는 제약 사항이 걸려 있어서 그렇다.
+DROP TABLE emp_rename CASCADE CONSTRAINTS;
+
 
 
 
