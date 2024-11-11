@@ -70,7 +70,78 @@ DELETE FROM chap10hw_emp
 SELECT * from chap10hw_emp;
 
 
+-- 트랜잭션 일의 묶음(은행 이체 카카오 뱅크에서 돈을 인출 100000 -> 신한은행 100000) 
+-- commit,rollback
 
+--테이블 복사
+CREATE TABLE dept_tcl AS SELECT * FROM dept;
+
+SELECT * FROM dept_tcl;
+
+-- 테이블 데이터에 영향을 미친다. commit rollback
+INSERT INTO dept_tcl VALUES (50,'DATABASE','SEOUL');
+UPDATE DEPT_TCL SET LOC = 'BUSAN' WHERE deptno = 40;
+DELETE FROM DEPT_TCL WHERE dname='RESEARCH';
+
+-- DDL (Data Definition Language)  create , rename, drop
+-- DML (Data Manipulation Language)   select, insert , delete , update
+-- Transation Control Language  commit/rollback
+COMMIT;
+ROLLBACK;
+
+SELECT * FROM dept_tcl;
+
+DELETE FROM DEPT_TCL WHERE deptno = 50; 
+
+UPDATE dept_tcl SET loc = 'SEOUL'
+WHERE deptno = 30;
+-- commit / rollback을 하지 않으면 다른 곳에서 접근 불가능 Lock
+
+
+-- data definition language  ddl에는 commit / rollback 없음...
+CREATE TABLE emp_ddl (
+	empno number(4),
+	ename varchar2(10),
+	job varchar2(9),
+	mgr number(4),
+	hiredate DATE,
+	sal number(7,2),  -- 전체 자릿수 7 소수점 자리수 2개 정수 5개 까지...   
+	comm number(7,2),
+	DEPTno number(2)
+);
+SELECT * FROM EMP_DDL ed ;
+
+-- 싹다 들고 온다.
+CREATE TABLE dept_ddl AS SELECT * FROM dept;
+SELECT * FROM dept_ddl;
+
+--구조만 즉 틀만 들고 온다. 안쪽에 데이터는 없다.
+CREATE TABLE dept_ddl AS SELECT * FROM dept WHERE 1!=1;
+
+--ALTER 는 테이블 변경
+CREATE TABLE emp_alter AS SELECT * FROM emp;
+SELECT * FROM emp_alter;
+
+--hp 컬럼 추가
+ALTER TABLE emp_alter
+ADD hp varchar2(13);
+
+SELECT * FROM emp_alter;
+
+--컬럼의 이름 바꾸기...
+ALTER TABLE emp_alter
+RENAME COLUMN hp TO tel;
+
+-- 사원이 증가해서 10000명
+ALTER TABLE emp_alter
+MODIFY empno number(5);
+
+-- 컬럼 없애기
+ALTER TABLE EMP_ALTER 
+DROP COLUMN tel;
+
+
+ 
 
 
 
