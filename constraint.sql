@@ -131,9 +131,38 @@ CREATE TABLE student_cource(
 );
 
 INSERT INTO students values(1,'장성호');
-INSERT INTO students values(2,'장동건');
+INSERT INTO students values(3,'장동건');
 
-INSERT INTO student_cource values(1,301,sysdate,'c');
+INSERT INTO student_cource values(3,101,sysdate,'a');
+INSERT INTO student_cource values(3,201,sysdate,'b');
+INSERT INTO student_cource values(3,301,sysdate,'b');
+
+SELECT s.*, sc.*
+FROM students s
+JOIN student_cource sc
+ON s.student_id = sc.student_id;
+
+DELETE FROM students WHERE student_id = 1;
+SELECT * FROM students;
+
+
+
+CREATE TABLE table_check (
+	login_id varchar2(20),
+	login_pw varchar2(20) 
+		CONSTRAINT table_check_loginpw_check CHECK(LENGTH(login_pw) > 3),
+	tel      varchar2(20)
+);
+INSERT INTO table_check values('aaa','2124','010-1111-1111');
+
+CREATE TABLE table_default (
+	login_id varchar2(20) DEFAULT '아무개',
+	login_pw varchar2(20),
+	tel      varchar2(20)
+);
+INSERT INTO table_default (login_pw,tel) values('1234','010-1111-1111');
+SELECT * FROM table_default;
+-- DML(insert, update,delete, select) / DDL(테이블 만들기)
 
 
 
