@@ -68,3 +68,47 @@ SELECT rownum AS no, v.*
 FROM view_emp_sal_desc v
 WHERE rownum between 1 AND 5;
 
+
+--sequence
+--자동증가
+--1,2,3,4,5,6,7,8
+
+CREATE TABLE dept_seq AS 
+SELECT * FROM DEPT d WHERE 1!=1;
+SELECT * FROM dept_seq;
+
+CREATE SEQUENCE seq_dept
+INCREMENT BY 10
+START WITH 10
+MAXVALUE 90
+MINVALUE 0
+NOCYCLE
+CACHE 2;
+
+SELECT * FROM user_sequences;
+INSERT INTO dept_seq (deptno,dname,loc) VALUES 
+(seq_dept.nextval,'WEB','SEOUL');
+
+
+SELECT * FROM dept_seq;
+
+--제일 마지막에 쓴 시퀀스
+SELECT seq_dept.currval FROM dual;
+
+
+CREATE SEQUENCE seq_board
+INCREMENT BY 1
+START WITH 1
+MAXVALUE 999999999999999
+MINVALUE 0
+NOCYCLE
+CACHE 10;
+
+ALTER SEQUENCE seq_dept
+INCREMENT BY 3
+MAXVALUE 99
+CYCLE ;
+-- 1,2,3,4,5,6,7,8 중간에 삭제한다고 끼워 넣기 없다.
+
+
+
