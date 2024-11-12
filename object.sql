@@ -1,0 +1,70 @@
+SELECT * FROM dict;
+SELECT * FROM dictionary;
+
+-- scott이 만든 테이블 이름 검색
+SELECT table_name FROM user_tables;
+
+SELECT OWNER, TABLE_name FROM all_tables;
+
+--dual은 아무나 쓸 수 있는 테이블 더미용 테이블  
+SELECT OWNER, TABLE_name FROM all_tables 
+WHERE table_name = 'DUAL';
+
+-- scott 에게 dba권한을 주면 출력이 가능
+SELECT * FROM dba_tables;
+
+-- 책에서 특정 내용을 찾을 떄 색인 (index)을 사용하듯이 
+-- 데이터 베이스도 빠른 검색을 위해서 index 설정을 한다.
+-- 검색 속도가 빨라진다.
+-- unique, null, primary 키 설정을 하면 자동으로 인덱스 설정이 된다.
+
+SELECT * FROM user_ind_columns; 
+--primary key 설정을 하면 (제약사항) 자동으로 index 생성됨...
+
+--있다는거 정도만 알아두세요. 
+CREATE INDEX idx_emp_sal ON emp(sal);
+DROP INDEX idx_emp_sal;
+
+-- view 객체
+-- table masking
+-- view 도 테이블이지만 읽기 전용 테이블
+
+--sys에서 scott에게 view를 만들 수 있는 권한을 부여해야 한다.
+CREATE VIEW view_emp20 AS 
+(SELECT empno, ename,job,deptno FROM emp
+WHERE DEPTNO = 20);
+
+--scott이 가지고 있는 view를 조회
+SELECT * FROM user_views;
+
+SELECT * FROM view_emp20;
+
+DROP VIEW view_emp20;
+
+-- top-n  쿼리  
+-- 게시판에 글이 300
+
+-- rownum은 없는 컬럼인데 순서 메기기 위해 사용하는 가짜 컬럼 유사,
+-- 의사 컬럼 pseudo column
+SELECT ROWNUM AS no,e.* FROM emp e
+ORDER BY sal DESC;
+
+-- top-n 쿼리
+-- 서브쿼리 이용
+SELECT ROWNUM AS NO, e.* from
+(SELECT * FROM emp
+ORDER BY sal DESC) e
+WHERE ROWNUM BETWEEN 1 AND 5;
+
+-- 인라인 view
+WITH e AS (SELECT * FROM emp ORDER BY sal desc)
+SELECT ROWNUM,e.* FROM e;
+
+-- view를 사용하는 방식
+CREATE VIEW view_emp_sal_desc AS 
+(SELECT * FROM emp) ORDER BY sal desc;
+
+SELECT rownum AS no, v.* 
+FROM view_emp_sal_desc v
+WHERE rownum between 1 AND 5;
+
