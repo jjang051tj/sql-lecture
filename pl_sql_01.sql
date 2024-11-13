@@ -233,7 +233,20 @@ BEGIN
 	END IF;
 END;
 
-
+-- v_age를 숫자로 입력 받아서 19세 이상이면 성인
+-- 13세 이상 19세 미만이면 청소년
+-- 나머지는 어린이 출력
+   
+DECLARE
+	v_age NUMBER := 20;
+BEGIN
+	IF v_age >= 19 THEN
+		dbms_output.put_line('성인');
+		ELSIF v_age >= 13 AND v_age < 19 THEN
+			dbms_output.put_line('청소년');
+		ELSE dbms_output.put_line('청소년');
+	END IF;
+END;
 
 
 
