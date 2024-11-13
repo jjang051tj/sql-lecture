@@ -100,7 +100,41 @@ BEGIN
 	END CASE;
 END;
 
-	
+
+--반복문
+--기본 반복문 while / for
+DECLARE
+	v_num NUMBER := 0;
+BEGIN
+	LOOP 
+		dbms_output.put_line('현재 v_num : ' || v_num);
+		v_num := v_num+1;
+		EXIT WHEN v_num > 10;
+	END LOOP;
+END;
+ 
+--while loop
+DECLARE
+	v_num NUMBER := 0;
+BEGIN
+	WHILE v_num < 10 LOOP  
+		dbms_output.put_line('현재 v_num : ' || v_num);
+		v_num := v_num+1;
+	END LOOP;
+END;
+ 
+
+--for loop
+DECLARE
+	--v_num NUMBER := 0;
+--  in 다음에 reverse 를 쓰면 거꾸로 된다.
+BEGIN
+	FOR i IN 0..10 LOOP   
+		CONTINUE WHEN mod(i,2) = 1;
+		dbms_output.put_line('현재 i : ' || i);
+	END LOOP;
+END;
+ 	
 
 
 
