@@ -84,5 +84,9 @@ GRANT rolestudy TO PREV_HW;
 --권한을 부여했으면 PREV_HW 계정으로 SCOTT의 EMP, DEPT, SALGRADE 테이블이 잘 조회되는지 확인해 보세요.
 
 
+CREATE USER jjang051 IDENTIFIED BY 1234;
+GRANT rolestudy TO jjang051;
+
+
 
 
