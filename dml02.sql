@@ -194,6 +194,8 @@ SELECT * FROM emp_hw;
 DROP TABLE emp_hw;
 
 
+--사용자  scott만들기...
+
 
 
 
