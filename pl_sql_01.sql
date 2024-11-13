@@ -44,7 +44,63 @@ BEGIN
 	dbms_output.put_line('loc = '|| v_dept_row.loc);
 END;
 
--- if , for
+--IF 조건 then
+DECLARE
+	v_number NUMBER := 14;
+BEGIN
+	IF mod(v_number,2) = 1 THEN
+		dbms_output.put_line('v_number는 홀수 입니다.');
+	ELSE 
+		dbms_output.put_line('v_number는 짝수 입니다.');
+	END IF; 
+END;
+
+--학점
+DECLARE 
+	v_score NUMBER := 87;
+BEGIN
+	IF v_score >= 90 THEN 
+		dbms_output.put_line('A학점');
+	ELSIF v_score >= 80 THEN
+		dbms_output.put_line('B학점');
+	ELSIF v_score >= 70 THEN
+		dbms_output.put_line('C학점');
+	ELSIF v_score >= 60 THEN
+		dbms_output.put_line('D학점');
+	ELSE
+		dbms_output.put_line('F학점');
+	END IF;
+END;
+
+
+--switch 
+DECLARE 
+	v_score NUMBER := 87;
+BEGIN
+	CASE TRUNC(v_score/10) 
+		WHEN 10 THEN dbms_output.put_line('A학점');
+		WHEN  9 THEN dbms_output.put_line('A학점');
+		WHEN  8 THEN dbms_output.put_line('B학점');
+		WHEN  7 THEN dbms_output.put_line('C학점');
+		WHEN  6 THEN dbms_output.put_line('D학점');
+		ELSE dbms_output.put_line('F학점');
+	END CASE;
+END;
+
+DECLARE 
+	v_score NUMBER := 87;
+BEGIN
+	CASE  
+		WHEN v_score>=100 THEN dbms_output.put_line('A학점');
+		WHEN v_score>=90  THEN dbms_output.put_line('A학점');
+		WHEN v_score>=80  THEN dbms_output.put_line('B학점');
+		WHEN v_score>=70  THEN dbms_output.put_line('C학점');
+		WHEN v_score>=60  THEN dbms_output.put_line('D학점');
+		ELSE dbms_output.put_line('F학점');
+	END CASE;
+END;
+
+	
 
 
 
