@@ -135,6 +135,103 @@ BEGIN
 	END LOOP;
 END;
  	
+--if 문 넣어서 쓸때
+BEGIN
+	FOR i IN 0..10 LOOP 
+		IF mod(i,2) = 1 THEN 
+			CONTINUE;
+		END IF;
+		dbms_output.put_line('현재 i : ' || i);
+	END LOOP;
+END;
+
+
+--if 문 넣어서 쓸때
+BEGIN
+	FOR i IN 0..10 LOOP 
+		IF i >= 5 THEN 
+			EXIT;
+		END IF;
+		dbms_output.put_line('현재 i : ' || i);
+	END LOOP;
+END;
+
+
+
+
+
+--practice01
+DECLARE
+
+BEGIN
+	FOR i IN 1..10 LOOP
+		CONTINUE WHEN MOD(i,2) = 0; 
+		dbms_output.put_line('현재 i의 : '||i);
+	END LOOP;
+END;
+
+DECLARE
+
+BEGIN
+	FOR i IN 1..10 LOOP
+		IF MOD(i,2) = 1 THEN
+			dbms_output.put_line('현재 i의 : '||i);
+		END IF;
+	END LOOP;
+END;
+
+
+DECLARE
+
+BEGIN
+	FOR i IN 1..10 LOOP
+		IF MOD(i,2) = 0 THEN
+			CONTINUE; 	
+		END IF;
+		dbms_output.put_line('현재 i의 : '||i);
+	END LOOP;
+END;
+
+
+--break 대신 exit를 쓴다,
+BEGIN
+	FOR i IN 1..10 LOOP
+		IF i > 5 THEN
+			EXIT; 	
+		END IF;
+		dbms_output.put_line('현재 i의 : '||i);
+	END LOOP;
+END;
+
+
+-- DEPT 테이블의 DEPTNO와 자료형이 같은 변수 V_DEPTNO를 선언합니다. 
+-- 그리고 V_DEPTNO 변수 값에 10, 20, 30, 40을 대입했을 때 
+-- 다음과 같이 부서 이름을 출력하는 프로그램을 작성해 보세요. 
+-- 단 부서 번호가 10, 20, 30, 40이 아니면 N/A로 출력합니다.
+
+SELECT * FROM dept;
+DECLARE 
+	v_deptno dept.deptno%TYPE := 10;
+BEGIN 
+	CASE v_deptno
+		WHEN 10 THEN dbms_output.put_line('dname : ACCOUNTING');
+		WHEN 20 THEN dbms_output.put_line('dname : RESEARCH');
+		WHEN 30 THEN dbms_output.put_line('dname : SALES');
+		WHEN 40 THEN dbms_output.put_line('dname : OPERATIONS');
+		ELSE  dbms_output.put_line('dname : N/A');
+	END CASE;
+END;
+
+DECLARE 
+	v_deptno dept.deptno%TYPE := 10;
+BEGIN 
+	IF  v_deptno = 10 THEN dbms_output.put_line('dname : ACCOUNTING');
+		ELSIF v_deptno = 20 THEN dbms_output.put_line('dname : RESEARCH');
+	    ELSIF v_deptno = 30 THEN dbms_output.put_line('dname : SALES');
+		ELSIF v_deptno = 40 THEN dbms_output.put_line('dname : OPERATIONS');
+		ELSE  dbms_output.put_line('dname : N/A');
+	END IF;
+END;
 
 
 
