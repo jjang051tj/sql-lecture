@@ -14,5 +14,20 @@ SELECT * FROM temp01;
 REVOKE  SELECT, INSERT ON temp01  
 FROM orclstudy;
 
+-- role 은 권한의 묶음...
+-- connect 
+--GRANT CONNECT,RESOURCE TO orclstudy; 
+
+
+GRANT SELECT ON emp TO PREV_HW;
+GRANT SELECT ON dept TO PREV_HW;
+GRANT SELECT ON salgrade TO PREV_HW;
+
+REVOKE SELECT ON salgrade FROM PREV_HW;
+
+
+
+
+
 
 

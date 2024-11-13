@@ -8,3 +8,5 @@ COMMIT;
 
 INSERT INTO temp01 VALUES ('jjang052','1234');
 SELECT * FROM temp05;
+
+SELECT * FROM scott.emp;
