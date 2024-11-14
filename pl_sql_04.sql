@@ -86,7 +86,7 @@ BEGIN
 END;
 --dept출력
 
-
+-- 명시적 커서
 DECLARE
 	V_DEPT_ROW DEPT%ROWTYPE;
 	V_DEPTNO DEPT.DEPTNO%TYPE;
@@ -115,6 +115,70 @@ BEGIN
 	END LOOP;
 	CLOSE c01;
 END;
+
+
+ROLLBACK;
+SELECT * FROM dept;
+INSERT INTO dept VALUES (50,'WEB','SEOUL');
+--묵시적 커서
+BEGIN
+	UPDATE DEPT SET DNAME = 'DATABASE' 
+	WHERE DEPTNO = 50;
+	DBMS_OUTPUT.PUT_LINE('갱신된 행의 수 : ' || SQL%ROWCOUNT);
+	IF (SQL%NOTFOUND) THEN 
+		DBMS_OUTPUT.PUT_LINE('갱신할 행이 없다');
+	ELSE 
+		DBMS_OUTPUT.PUT_LINE('갱신할 행이 있다');
+	END IF;
+	--묵시적 커서는 구문에 나타나지 않지만 존재하고 있는 cursor이다.
+    --키워드 sql로 접근하면 된다.
+END;
+
+
+
+--practice01
+--명시적 커서를 사용하여 EMP 테이블의 전체 데이터를 조회한 후 커서 안의 
+--데이터가 다음과 같이 출력되도록 PL/SQL문을 작성해 보세요.            
+--① LOOP를 사용한 방식           
+--② FOR LOOP를 사용한 방식
+
+DECLARE
+	V_EMP_ROW EMP%ROWTYPE;
+	CURSOR c01 IS 
+		SELECT * FROM EMP;
+BEGIN
+	OPEN c01;
+		LOOP
+			FETCH c01 INTO V_EMP_ROW;
+			EXIT WHEN C01%NOTFOUND;
+			dbms_output.put_line(
+				'empno   : '|| V_EMP_ROW.empno ||
+				',ename  : '|| V_EMP_ROW.ename ||
+				',job    : '|| V_EMP_ROW.job   ||
+				',sal    : '|| V_EMP_ROW.sal   ||
+				',deptno : '|| V_EMP_ROW.empno
+			);
+		END LOOP;
+	CLOSE c01;
+END;
+
+
+
+DECLARE
+	CURSOR c01 IS 
+		SELECT * FROM EMP;
+BEGIN
+	FOR C01_RECORD IN C01 LOOP 
+			DBMS_OUTPUT.PUT_LINE(
+				'EMPNO   : '|| C01_RECORD.EMPNO ||
+				',ENAME  : '|| C01_RECORD.ENAME ||
+				',JOB    : '|| C01_RECORD.JOB   ||
+				',SAL    : '|| C01_RECORD.SAL   ||
+				',DEPTNO : '|| C01_RECORD.EMPNO
+			);
+	END LOOP;
+END;
+
 
 
 
