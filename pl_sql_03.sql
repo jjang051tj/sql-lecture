@@ -186,9 +186,8 @@ BEGIN
 	END LOOP;
 END;
 
-
-
-
+--cursor
+SELECT * FROM emp;
 
 
 
