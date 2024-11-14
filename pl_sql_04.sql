@@ -179,6 +179,44 @@ BEGIN
 	END LOOP;
 END;
 
+-- 예외처리
+-- 컴파일 오류 / RUNTIME오류
+DECLARE 
+	V_NUM NUMBER;
+BEGIN
+	SELECT DNAME INTO  V_NUM
+	FROM DEPT
+	WHERE DEPTNO = 10;
+	DBMS_OUTPUT.PUT_LINE('여기는 실행되지 않습니다.');
+	EXCEPTION 
+		WHEN VALUE_ERROR THEN
+			DBMS_OUTPUT.PUT_LINE('예외 처리 : 수치 또는 값 오류');
+		WHEN TOO_MANY_ROWS THEN
+			DBMS_OUTPUT.PUT_LINE('예외 처리 : 요구보다 많은 행이 추출되었습니다.');
+		WHEN OTHERS THEN
+			DBMS_OUTPUT.PUT_LINE('알 수 없는 오류 발생');
+END;
+
+
+DECLARE 
+	V_NUM NUMBER;
+BEGIN
+	SELECT DNAME INTO  V_NUM
+	FROM DEPT
+	WHERE DEPTNO = 10;
+	DBMS_OUTPUT.PUT_LINE('여기는 실행되지 않습니다.');
+	--컴파일 오류는 잡기 쉽다.
+    --런타임 오류는 잡기 힘들다. 미리 예측을 해서 잡을 수 있는 것들은 예외 처리를 한다.
+	EXCEPTION 
+		WHEN OTHERS THEN
+			DBMS_OUTPUT.PUT_LINE('알 수 없는 오류 발생'|| 
+		to_char(sysdate,'YYYY/MM/DD HH24 : mm : SS'));
+			DBMS_OUTPUT.PUT_LINE('SQLCODE : '|| TO_CHAR(SQLCODE));
+			DBMS_OUTPUT.PUT_LINE('SQLERRM : '|| SQLERRM);
+END;
+
+
+
 
 
 
