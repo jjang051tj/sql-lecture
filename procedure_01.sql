@@ -249,6 +249,118 @@ INSERT INTO emp_trg VALUES (
 
 
 
+/*
+다음과 같은 결과가 나오도록 내용을 작성해 보세요.           
+①   DEPT 테이블의 부서 번호(DEPTNO)를 입력 값으로 받은 후 부서 번호(DEPTNO), 
+	부서 이름(DNAME), 지역(LOC)을 출력하는 프로시저 pro_dept_in을 작성해 보세요.           
+②   pro_dept_in 프로시저를 통해 출력된 부서 번호(DEPTNO), 부서 이름(DNAME), 지역(LOC)을 
+다음과 같이 출력하는 PL/SQL 프로그램을 작성해 보세요.
+*/
+
+CREATE OR REPLACE PROCEDURE pro_dept_in(
+	inout_deptno IN OUT DEPT.DEPTNO%TYPE,
+	out_dname OUT DEPT.DNAME%TYPE,
+	out_loc OUT DEPT.LOC%TYPE
+)
+IS 
+BEGIN 
+	SELECT deptno,dname,loc INTO inout_deptno,out_dname,out_loc 
+	FROM dept
+	WHERE deptno = inout_deptno;
+END;
+
+
+DECLARE
+	v_deptno DEPT.DEPTNO%TYPE;
+	v_dname  DEPT.DNAME%TYPE;
+	v_loc 	 DEPT.LOC%TYPE;	
+BEGIN
+	v_deptno := 10;
+	pro_dept_in(v_deptno,v_dname,v_loc);
+	dbms_output.put_line('부서번호 : '||v_deptno);
+	dbms_output.put_line('부서명 : '||v_dname);
+	dbms_output.put_line('지역 : '||v_loc);
+END;
+
+
+
+/*
+	다음과 같은 결과가 나오도록 내용을 작성해 보세요.             
+	SELECT문에서 사용할 수 있는 함수 func_date_kor를 작성합니다. 
+	func_date_kor 함수는 DATE 자료형 데이터를 입력받아 다음과 같이 YYYY년MM월DD일 
+	형태의 데이터를 출력합니다. 
+ */
+
+CREATE OR REPLACE FUNCTION func_date_kor(
+	in_date IN DATE
+)
+RETURN VARCHAR2 
+IS 
+BEGIN 
+	RETURN (TO_CHAR(in_date,'YYYY"년"MM"월"DD"일"'));
+END;
+
+SELECT * FROM emp;
+SELECT ename,func_date_kor(hiredate) AS hiredate FROM EMP e 
+WHERE empno = 7369;
+
+
+/*
+ * 다음과 같은 결과가 나오도록 내용을 작성해 보세요.            
+ * ①   DEPT 테이블과 같은 열 구조 및 데이터를 가진 DEPT_TRG 테이블을 작성해 보세요.            
+ * ②   DEPT_TRG 테이블에 DML 명령어를 사용한 기록을 저장하는 DEPT_TRG_LOG 테이블을  다음과 같이 작성해 보세요.
+ */
+
+CREATE TABLE dept_trg AS 
+SELECT * FROM dept;
+
+CREATE TABLE DEPT_TRG_LOG(
+	TABLENAME VARCHAR2(100),
+	DML_TYPE VARCHAR2(100),
+	DEPTNO NUMBER(2),
+	USER_NAME VARCHAR2(100),
+	CHANGE_DATE DATE
+);
+SELECT * FROM DEPT_TRIGGER;
+
+CREATE OR REPLACE TRIGGER trigger_dept_log
+AFTER 
+INSERT OR UPDATE OR DELETE ON dept_trg
+FOR EACH ROW 
+BEGIN 
+	IF INSERTING  THEN 
+		INSERT INTO DEPT_TRG_LOG 
+		VALUES ('DEPT_TRG',
+				'INSERT',
+				:new.deptno,
+				SYS_CONTEXT('USERENV','SESSION_USER'),
+				SYSDATE
+				);
+	ELSIF UPDATING THEN 	
+		INSERT INTO DEPT_TRG_LOG 
+		VALUES ('DEPT_TRG',
+				'UPDATE',
+				:old.deptno,
+				SYS_CONTEXT('USERENV','SESSION_USER'),
+				SYSDATE
+				);
+	ELSIF DELETING THEN 	
+		INSERT INTO DEPT_TRG_LOG 
+		VALUES ('DEPT_TRG',
+				'DELETE',
+				:old.deptno,
+				SYS_CONTEXT('USERENV','SESSION_USER'),
+				SYSDATE
+				);
+	END IF;			
+END;
+
+SELECT * FROM DEPT_TRG_LOG;
+
+INSERT INTO dept_trg values(50,'DATABASE','SEOUL');
+
+
+
 
 
 
