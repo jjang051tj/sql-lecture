@@ -122,7 +122,40 @@ SELECT empno,ename,sal,func_after_tax(sal) AS after_tax FROM emp;
 
 
 
+--emp테이블에서 10번 부서의 sal을 10% 인상하는 프로시져 만들어 보기....
 
+CREATE OR REPLACE PROCEDURE increease_sal 
+IS 
+BEGIN 
+	UPDATE emp SET sal = sal*1.1
+	WHERE deptno = 10;
+	COMMIT;
+END;
+
+BEGIN
+	increease_sal;
+END;
+SELECT * FROM emp;
+
+
+--이번에는 입력받은 부서의 급여를 입력받은 %만큼 올려주기...
+
+CREATE OR REPLACE PROCEDURE increase_sal02(
+	p_deptno NUMBER,
+	p_percent NUMBER 
+)
+IS 
+BEGIN 
+	UPDATE emp SET 
+		sal = sal + sal*(p_percent/100)
+	WHERE deptno = p_deptno;
+	COMMIT;
+END;
+
+BEGIN
+	increase_sal02(20,10);
+END;
+SELECT * FROM emp WHERE deptno=20;
 
 
 
