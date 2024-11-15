@@ -116,8 +116,9 @@ BEGIN
 END;
 
 
+SELECT func_after_tax(3000) AS after_tax FROM dual;
 
-
+SELECT empno,ename,sal,func_after_tax(sal) AS after_tax FROM emp;
 
 
 
