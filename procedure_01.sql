@@ -60,6 +60,70 @@ BEGIN
 END;
 
 
+CREATE OR REPLACE PROCEDURE pro_param_inout (
+	inout_no IN OUT NUMBER 
+)
+IS 
+BEGIN
+	inout_no := inout_no*2;
+END pro_param_inout;
+
+
+DECLARE
+	num NUMBER;
+BEGIN
+	num := 5;
+	pro_param_inout(num);
+	dbms_output.put_line('num : '|| num);
+END;
+
+
+
+
+CREATE OR REPLACE PROCEDURE pro_err
+IS 
+	err_no NUMBER;
+BEGIN
+	err_no := 100;
+	dbms_output.put_line('err_no : '||err_no);
+END pro_err;
+
+BEGIN
+	pro_err;
+END;
+
+SELECT * FROM USER_ERRORS;
+--SHOW ERRORS;
+
+--함수만들기 내가 만든 함수
+CREATE OR REPLACE FUNCTION func_after_tax(
+	sal NUMBER
+)
+RETURN NUMBER
+IS 
+	tax NUMBER := 0.033;
+BEGIN
+	RETURN round(sal - (sal*tax));
+END func_after_tax;
+
+DECLARE
+	after_tax NUMBER;
+	money NUMBER;
+BEGIN
+	money := 3000;
+	after_tax:=func_after_tax(money);
+	dbms_output.put_line('원금 : '||money || ' / after_tax : '||after_tax);
+END;
+
+
+
+
+
+
+
+
+
+
 
 
 
