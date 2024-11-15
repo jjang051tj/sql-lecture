@@ -141,29 +141,108 @@ SELECT * FROM emp;
 --이번에는 입력받은 부서의 급여를 입력받은 %만큼 올려주기...
 
 CREATE OR REPLACE PROCEDURE increase_sal02(
-	p_deptno NUMBER,
-	p_percent NUMBER 
+    p_deptno NUMBER,
+    p_percent NUMBER
 )
 IS 
 BEGIN 
-	UPDATE emp SET 
-		sal = sal + sal*(p_percent/100)
-	WHERE deptno = p_deptno;
-	COMMIT;
+    -- 급여 인상
+    UPDATE emp 
+    SET sal = sal + sal * (p_percent / 100)
+    WHERE deptno = p_deptno;
+    
+    -- 변경된 부서의 직원들을 출력
+    FOR emp_record IN (
+        SELECT empno, ename, sal, deptno
+        FROM emp
+        WHERE deptno = p_deptno
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE('EmpNo: ' || emp_record.empno || ', Name: ' || emp_record.ename || ', Salary: ' || emp_record.sal);
+    END LOOP;
+
+    COMMIT;  -- 변경 사항을 커밋
 END;
 
+
+-- 프로시저 호출
 BEGIN
 	increase_sal02(20,10);
 END;
-SELECT * FROM emp WHERE deptno=20;
 
 
 
 
+CREATE TABLE emp_trg AS SELECT * FROM emp;
+
+--방아쇠 trigger
+--dml (insert, update, delete)
+CREATE OR REPLACE TRIGGER trg_emp_nodmp_weekend
+BEFORE 
+INSERT OR UPDATE OR DELETE ON emp_trg
+BEGIN 
+	IF TO_CHAR(SYSDATE,'DY') IN ('토','일')  THEN 
+		IF INSERTING THEN 
+			raise_application_error(-20000,'주말엔 사원정보 추가 불가');
+		ELSIF UPDATING  THEN
+			raise_application_error(-20001,'주말엔 사원정보 수정 불가');
+		ELSIF DELETING  THEN
+			raise_application_error(-20002,'주말엔 사원정보 삭제 불가');
+		ELSE 
+			raise_application_error(-20003,'주말엔 사원정보 변경 불가');
+		END IF;
+	END IF;
+END;
 
 
 
+SELECT TO_CHAR(SYSDATE,'DY') FROM dual;
+SELECT * FROM emp_trg;
+UPDATE emp_trg SET sal = 30000 WHERE empno = 7369;
 
+
+--사원을 인서트하고 하고 나면 log 테이블에 기록 남기기
+CREATE TABLE EMP_TRG_LOG(
+	TABLENAME   VARCHAR2(100),
+	DML_TYPE    VARCHAR2(100),
+	EMPNO       NUMBER(5),
+	USER_NAME   VARCHAR2(100),
+	CHANGE_DATE DATE
+);
+CREATE OR REPLACE TRIGGER trg_emp_log
+AFTER 
+INSERT OR UPDATE OR DELETE ON emp_trg
+FOR EACH ROW 
+BEGIN 
+	IF INSERTING THEN 
+		INSERT INTO EMP_TRG_LOG VALUES ('emp_trg',
+										'insert',
+										:new.empno,
+										sys_context('USERENV','SESSION_USER'),
+										sysdate
+										);
+	ELSIF UPDATING THEN 
+		INSERT INTO EMP_TRG_LOG VALUES ('emp_trg',
+										'update',
+										:old.empno,
+										sys_context('USERENV','SESSION_USER'),
+										sysdate
+										); 	
+	ELSIF DELETING THEN 
+		INSERT INTO EMP_TRG_LOG VALUES ('emp_trg',
+										'delete',
+										:old.empno,
+										sys_context('USERENV','SESSION_USER'),
+										sysdate
+										); 	
+	END IF;																	
+END;
+
+SELECT * FROM emp_trg;
+SELECT * FROM EMP_TRG_LOG;
+
+INSERT INTO emp_trg VALUES (
+	9997,'dsfds','CLERK',7788,
+	TO_DATE('2024-11-14','YYYY-MM-DD'), 1200,NULL,20);
 
 
 
